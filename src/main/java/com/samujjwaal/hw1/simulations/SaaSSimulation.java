@@ -1,9 +1,8 @@
 package com.samujjwaal.hw1.simulations;
 
-import com.samujjwaal.hw1.utils.DataCenterUtils;
-import com.samujjwaal.hw1.utils.LoadDataCenterConfig;
-import com.samujjwaal.hw1.utils.LoadHostConfig;
+import com.samujjwaal.hw1.utils.*;
 import org.cloudbus.cloudsim.brokers.DatacenterBroker;
+import org.cloudbus.cloudsim.brokers.DatacenterBrokerSimple;
 import org.cloudbus.cloudsim.cloudlets.Cloudlet;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.datacenters.Datacenter;
@@ -12,7 +11,9 @@ import org.cloudbus.cloudsim.hosts.Host;
 import org.cloudbus.cloudsim.hosts.HostSimple;
 import org.cloudbus.cloudsim.resources.Pe;
 import org.cloudbus.cloudsim.resources.PeSimple;
+import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelFull;
 import org.cloudbus.cloudsim.vms.Vm;
+import org.cloudsimplus.builders.tables.CloudletsTableBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,8 +41,28 @@ public class SaaSSimulation {
 
         Datacenter dc = DataCenterUtils.createDatacenter(host0, datacenter0,simulation);
 
-        System.out.println(dc.getHostList().toString());
-        System.out.println(dc.getCharacteristics().toString());
+        DatacenterBroker broker0 = new DatacenterBrokerSimple(simulation,"SaaS_Simulation_Broker");
+
+
+        LoadVmConfig vmSpec = new LoadVmConfig();
+
+        Vm vm = DataCenterUtils.createVm(vmSpec);
+
+        broker0.submitVm(vm);
+
+
+        LoadCloudletConfig cloudletSpec = new LoadCloudletConfig();
+
+        Cloudlet cloudlet = DataCenterUtils.createCloudlet(cloudletSpec, new UtilizationModelFull());
+
+        broker0.submitCloudlet(cloudlet);
+
+
+        simulation.start();
+
+        final List<Cloudlet> finishedCloudlets = broker0.getCloudletFinishedList();
+        new CloudletsTableBuilder(finishedCloudlets).build();
+
 
     }
 
