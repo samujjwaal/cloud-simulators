@@ -6,63 +6,61 @@ import org.cloudbus.cloudsim.brokers.DatacenterBrokerSimple;
 import org.cloudbus.cloudsim.cloudlets.Cloudlet;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.datacenters.Datacenter;
-import org.cloudbus.cloudsim.datacenters.DatacenterSimple;
-import org.cloudbus.cloudsim.hosts.Host;
-import org.cloudbus.cloudsim.hosts.HostSimple;
-import org.cloudbus.cloudsim.resources.Pe;
-import org.cloudbus.cloudsim.resources.PeSimple;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelFull;
 import org.cloudbus.cloudsim.vms.Vm;
 import org.cloudsimplus.builders.tables.CloudletsTableBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SaaSSimulation {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+    public SaaSSimulation(int simulationNo){
+        //Define a static logger variable so that it references the Logger instance
+        Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+        logger.info("Initiating SaaS Simulation\n");
+        String simulationModel = "SaaSSim";
+        int index = 1;
 
-//    private final CloudSim simulation;
-//    private DatacenterBroker broker0;
-//    private List<Vm> vmList;
-//    private List<Cloudlet> cloudletList;
-//    private Datacenter datacenter0;
-
-    public SaaSSimulation(){
-        logger.info("Initiating SaaS Simulation");
-
+        // create instance object of CloudSim class
         CloudSim simulation = new CloudSim();
 
-        LoadHostConfig host0 = new LoadHostConfig();
+        // create instances of classes for parsing config files and get simulation specifications
+        LoadHostConfig hostSpec = new LoadHostConfig(simulationModel,simulationNo,index);
+        LoadDataCenterConfig dcSpec = new LoadDataCenterConfig(simulationModel,simulationNo,index);
+        LoadVmConfig vmSpec = new LoadVmConfig(simulationModel,simulationNo,index);
+        LoadCloudletConfig cloudletSpec = new LoadCloudletConfig(simulationModel,simulationNo,index);
 
-        LoadDataCenterConfig datacenter0 = new LoadDataCenterConfig();
+        logger.info("Parsed datacenter specifications from config\n");
 
-        Datacenter dc = DataCenterUtils.createDatacenter(host0, datacenter0,simulation);
+        // create instance of util class
+        DataCenterUtils dcUtil = new DataCenterUtils(hostSpec,dcSpec,vmSpec,cloudletSpec);
 
-        DatacenterBroker broker0 = new DatacenterBrokerSimple(simulation,"SaaS_Simulation_Broker");
+        Datacenter dc = dcUtil.createDatacenter(simulation);
 
+        // Creates a broker that is a software acting on behalf a cloud customer to manage his/her VMs and Cloudlets
+        DatacenterBroker broker0 = new DatacenterBrokerSimple(simulation);
 
-        LoadVmConfig vmSpec = new LoadVmConfig();
+        Vm vm = dcUtil.createVm();
 
-        Vm vm = DataCenterUtils.createVm(vmSpec);
-
+        // submit vm list to broker
         broker0.submitVm(vm);
 
+        Cloudlet cloudlet = dcUtil.createCloudlet(new UtilizationModelFull());
 
-        LoadCloudletConfig cloudletSpec = new LoadCloudletConfig();
-
-        Cloudlet cloudlet = DataCenterUtils.createCloudlet(cloudletSpec, new UtilizationModelFull());
-
+        // submit cloudlet list to broker
         broker0.submitCloudlet(cloudlet);
 
-
+        // execute simulation
         simulation.start();
 
         final List<Cloudlet> finishedCloudlets = broker0.getCloudletFinishedList();
+
         new CloudletsTableBuilder(finishedCloudlets).build();
 
+        System.out.println("Total cost of simulation = "+dcUtil.executionCost(finishedCloudlets));
+        System.out.println("\n");
 
     }
 

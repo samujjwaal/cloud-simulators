@@ -5,12 +5,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ExecuteSimulations {
-
+    //Define a static logger variable so that it references the Logger instance
     private static final Logger logger = LoggerFactory.getLogger(ExecuteSimulations.class.getSimpleName());
 
     public static void main(String[] args) {
-        logger.info("Executing all Hw1 Simulations");
-        logger.info("Software as a Service Model Simulation");
-        new SaaSSimulation();
+        logger.info("Executing all Hw1 Simulations\n");
+
+        logger.info("Simulating Software as a Service Model\n");
+
+        logger.info("=== SaaS simulation 1 ===\n");
+        new SaaSSimulation(1);
+        logger.info("=== SaaS simulation 2 ===\n");
+        new SaaSSimulation(2);
     }
 }

@@ -4,10 +4,17 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
 public class LoadHostConfig {
-    Config conf = ConfigFactory.load("SaaSSim");
-    int  ram = conf.getInt("host1.ram");
-    int  storage = conf.getInt("host1.storage");
-    int  bw = conf.getInt("host1.bw");
-    int  numberOfPE = conf.getInt("host1.numberOfPE");
-    int  mips = conf.getInt("host1.mips");
+
+    Config conf;
+    int  ram, storage, bw, numberOfPE, mips;
+
+    public LoadHostConfig(String simulationType,int simulNum, int index) {
+        conf = ConfigFactory.load(simulationType);
+        String configItem = "simulation"+simulNum+"."+"host"+index+".";
+        ram = conf.getInt(configItem + "ram");
+        storage = conf.getInt(configItem + "storage");
+        bw = conf.getInt(configItem + "bw");
+        numberOfPE = conf.getInt(configItem + "numberOfPE");
+        mips = conf.getInt(configItem + "mips");
+    }
 }
