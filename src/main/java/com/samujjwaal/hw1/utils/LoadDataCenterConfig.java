@@ -5,7 +5,7 @@ import com.typesafe.config.ConfigFactory;
 
 public class LoadDataCenterConfig {
     Config conf;
-    int numberOfHosts;
+    int numberOfHosts, numberOfVms,numberOfCloudlets;
     String arch, os, vmm;
     double costPerSecond ,costPerMem, costPerStorage, costPerBw;
 
@@ -13,6 +13,8 @@ public class LoadDataCenterConfig {
         conf = ConfigFactory.load(simulationType);
         String configItem = "simulation"+simulNum+"."+"dataCenter"+index+".";
         numberOfHosts = conf.getInt(configItem + "numberOfHosts");
+        numberOfVms = conf.getInt(configItem + "numberOfVms");
+        numberOfCloudlets = conf.getInt(configItem + "numberOfCloudlets");
         arch = conf.getString(configItem + "arch");
         os = conf.getString(configItem + "os");
         vmm = conf.getString(configItem + "vmm");
