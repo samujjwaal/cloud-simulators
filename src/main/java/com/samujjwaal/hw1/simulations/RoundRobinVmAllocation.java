@@ -44,14 +44,13 @@ public class RoundRobinVmAllocation {
         // Creates a broker that is a software acting on behalf a cloud customer to manage VMs and Cloudlets
         DatacenterBroker broker = new DatacenterBrokerSimple(simulation);
 
-        // create list of hosts from config
+        // create list of vms from config
         List<Vm> vmList = dcUtil.createVmList();
-        // create list of cloudlets from config
-        List<Cloudlet> cloudletList = dcUtil.createCloudletList();
-
         // submit vm list to broker
         broker.submitVmList(vmList);
 
+        // create list of cloudlets from config
+        List<Cloudlet> cloudletList = dcUtil.createCloudletList();
         // submit cloudlet list to broker
         broker.submitCloudletList(cloudletList);
 

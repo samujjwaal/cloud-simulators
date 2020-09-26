@@ -11,6 +11,10 @@ import org.cloudbus.cloudsim.hosts.Host;
 import org.cloudbus.cloudsim.hosts.HostSimple;
 import org.cloudbus.cloudsim.resources.Pe;
 import org.cloudbus.cloudsim.resources.PeSimple;
+import org.cloudbus.cloudsim.schedulers.cloudlet.CloudletScheduler;
+import org.cloudbus.cloudsim.schedulers.cloudlet.CloudletSchedulerTimeShared;
+import org.cloudbus.cloudsim.schedulers.vm.VmScheduler;
+import org.cloudbus.cloudsim.schedulers.vm.VmSchedulerSpaceShared;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModel;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelFull;
 import org.cloudbus.cloudsim.vms.Vm;
@@ -44,7 +48,7 @@ public class DataCenterUtils {
     }
 
     public List<Pe> createPeList() {
-        final List<Pe> list = new ArrayList<>();
+        List<Pe> list = new ArrayList<>();
         IntStream.range(0, configHost.numberOfPE)
                 .forEach(i -> {
                     list.add(new PeSimple(configHost.mips));
@@ -53,35 +57,44 @@ public class DataCenterUtils {
         return list;
     }
 
-    public Host createHost(boolean activateHost) {
+
+    public Host createHost(boolean activateHost, VmScheduler vmScheduler) throws IllegalAccessException, InstantiationException {
         //List of Host's CPUs (Processing Elements, PEs)
-        final List<Pe> peList = createPeList();
+        List<Pe> peList = createPeList();
         /*
         Uses ResourceProvisionerSimple by default for RAM and BW provisioning
         and VmSchedulerSpaceShared for VM scheduling.
         */
-        return new HostSimple(configHost.ram, configHost.bw, configHost.storage, peList, activateHost);
+        // Need to create a new instance of VmScheduler for each host. Each host must use is own instance of a VmScheduler
+        VmScheduler scheduler = vmScheduler.getClass().newInstance();
+
+        return new HostSimple(configHost.ram, configHost.bw, configHost.storage, peList, activateHost)
+                .setVmScheduler(scheduler);
     }
 
-    public List<Host> createHostList(boolean activateHosts) {
-        final List<Host> list = new ArrayList<>();
-        logger.info("Adding hosts " + configDatacenter.numberOfHosts + " to the datacenter");
+    public List<Host> createHostList(boolean activateHosts, VmScheduler vmScheduler) {
+        List<Host> list = new ArrayList<>();
+        logger.info("Adding " + configDatacenter.numberOfHosts + " hosts to the datacenter");
         IntStream.range(0, configDatacenter.numberOfHosts)
                 .forEach(i -> {
                     logger.info("Creating host " + i + " and adding PEs ");
-                    list.add(createHost(activateHosts));
+                    try {
+                        list.add(createHost(activateHosts, vmScheduler));
+                    } catch (IllegalAccessException | InstantiationException e) {
+                        e.printStackTrace();
+                    }
                     logger.info("Host " + i + " added to datacenter");
                 });
         System.out.println();
         return list;
     }
 
-    public Datacenter createDatacenter(CloudSim simulation, VmAllocationPolicy vmPolicy, boolean activateHosts) {
+    public Datacenter createDatacenter(CloudSim simulation, VmAllocationPolicy vmAllocPolicy,VmScheduler vmScheduler, boolean activateHosts) {
         //List of Datacenter's Hosts
-        final List<Host> hostList = createHostList(activateHosts);
+        List<Host> hostList = createHostList(activateHosts,vmScheduler);
 
         //Uses a VmAllocationPolicySimple by default to allocate VMs
-        Datacenter dc = new DatacenterSimple(simulation, hostList, vmPolicy);
+        Datacenter dc = new DatacenterSimple(simulation, hostList, vmAllocPolicy);
         // set characteristics of the datacenter
         dc.getCharacteristics()
                 .setArchitecture(configDatacenter.arch)
@@ -94,32 +107,44 @@ public class DataCenterUtils {
         return dc;
     }
 
-    public Datacenter createDatacenter(CloudSim simulation, VmAllocationPolicy vmPolicy) {
-        return createDatacenter(simulation, vmPolicy, true);
+    public Datacenter createDatacenter(CloudSim simulation, VmAllocationPolicy vmAllocPolicy, boolean activateHosts) {
+        return createDatacenter(simulation, vmAllocPolicy, new VmSchedulerSpaceShared(),activateHosts);
+    }
+
+    public Datacenter createDatacenter(CloudSim simulation, VmAllocationPolicy vmAllocPolicy) {
+        return createDatacenter(simulation, vmAllocPolicy, new VmSchedulerSpaceShared(), true);
+    }
+
+    public Datacenter createDatacenter(CloudSim simulation, VmScheduler vmScheduler) {
+        return createDatacenter(simulation, new VmAllocationPolicySimple(), vmScheduler, true);
     }
 
     public Datacenter createDatacenter(CloudSim simulation, boolean activateHosts) {
-        return createDatacenter(simulation, new VmAllocationPolicySimple(), activateHosts);
+        return createDatacenter(simulation, new VmAllocationPolicySimple(), new VmSchedulerSpaceShared(),activateHosts);
     }
 
     public Datacenter createDatacenter(CloudSim simulation) {
         return createDatacenter(simulation, true);
     }
 
-    public Vm createVm() {
+    public Vm createVm(CloudletScheduler cloudletScheduler) {
         // return new vm instance
-        return new VmSimple(configVM.mips, configVM.numberOfPE)
+        return new VmSimple(configVM.mips, configVM.numberOfPE, cloudletScheduler)
                 .setRam(configVM.ram)
                 .setBw(configVM.bw)
                 .setSize(configVM.size);
     }
 
-    public List<Vm> createVmList() {
-        final List<Vm> list = new ArrayList<>();
+    public List<Vm> createVmList(CloudletScheduler cloudletScheduler) {
+        List<Vm> list = new ArrayList<>();
         logger.info("Provisioning " + configDatacenter.numberOfVms + " Vms for allocation to datacenter hosts\n");
         IntStream.range(0, configDatacenter.numberOfVms)
-                .forEach(i -> list.add(createVm()));
+                .forEach(i -> list.add(createVm(cloudletScheduler)));
         return list;
+    }
+
+    public List<Vm> createVmList(){
+        return createVmList(new CloudletSchedulerTimeShared());
     }
 
     public Cloudlet createCloudlet(UtilizationModel utilizationModel) {
@@ -133,9 +158,9 @@ public class DataCenterUtils {
     }
 
     public List<Cloudlet> createCloudletList(UtilizationModel utilizationModel) {
-        final List<Cloudlet> list = new ArrayList<>();
+        List<Cloudlet> list = new ArrayList<>();
         logger.info("Received " + configDatacenter.numberOfCloudlets + " cloudlets for execution in the datacenter\n");
-        IntStream.range(0, configDatacenter.numberOfVms)
+        IntStream.range(0, configDatacenter.numberOfCloudlets)
                 .forEach(i -> list.add(createCloudlet(utilizationModel)));
         return list;
     }
