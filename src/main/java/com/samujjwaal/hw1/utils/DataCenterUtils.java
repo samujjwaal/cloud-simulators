@@ -76,6 +76,10 @@ public class DataCenterUtils {
                 .setVmScheduler(scheduler);
     }
 
+    public Host createHost() throws InstantiationException, IllegalAccessException {
+        return createHost(true, new VmSchedulerSpaceShared());
+    }
+
     public List<Host> createHostList(boolean activateHosts, VmScheduler vmScheduler) {
         List<Host> list = new ArrayList<>();
         logger.info("Adding " + configDatacenter.numberOfHosts + " hosts to the datacenter");
@@ -91,6 +95,10 @@ public class DataCenterUtils {
                 });
         System.out.println();
         return list;
+    }
+
+    public List<Host> createHostList(){
+        return createHostList(true, new VmSchedulerSpaceShared());
     }
 
     public Datacenter createDatacenter(CloudSim simulation, VmAllocationPolicy vmAllocPolicy, VmScheduler vmScheduler, boolean activateHosts) {
@@ -137,6 +145,10 @@ public class DataCenterUtils {
                 .setRam(configVM.ram)
                 .setBw(configVM.bw)
                 .setSize(configVM.size);
+    }
+
+    public Vm createVm(){
+        return createVm(new CloudletSchedulerTimeShared());
     }
 
     public List<Vm> createVmList(CloudletScheduler cloudletScheduler) {
