@@ -14,6 +14,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * A simple simulation showing Time Shared and Space Shared VM Scheduling
+ * in a simple datacenter with 1 host, 1 VM and 2 cloudlets for execution.
+ */
+
 public class CloudletExecutionSchedulerSimulation {
     public CloudletExecutionSchedulerSimulation(int simulationNo, String simulationModel, VmScheduler vmScheduler, CloudletScheduler cloudletScheduler) {
         //Define a static logger variable so that it references the Logger instance
@@ -43,13 +48,14 @@ public class CloudletExecutionSchedulerSimulation {
         DatacenterBroker broker = new DatacenterBrokerSimple(simulation);
 
         // create a vm from config
+        logger.info("Creating VM & submitting to datacenter broker");
         Vm vm = dcUtil.createVm(cloudletScheduler);
-        // submit vm list to broker
+        // submit vm to broker
         broker.submitVm(vm);
 
+        logger.info("Creating list of Cloudlets & submitting to datacenter broker");
         // create list of cloudlets from config
         List<Cloudlet> cloudletList = dcUtil.createCloudletList();
-
         // submit cloudlet list to broker
         broker.submitCloudletList(cloudletList);
 

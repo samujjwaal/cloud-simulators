@@ -14,6 +14,15 @@ import org.slf4j.LoggerFactory;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * A simulation that shows the usage of the VmAllocationPolicyRoundRobin,
+ * that cyclically assigns VMs to Hosts.
+ * This policy places a VM into a Host and moves to the next Host.
+ * <p>
+ * All hosts are not powered-on when created. As VMs need to be placed,
+ * Hosts are activated on demand (as can be checked in the logs).
+ */
+
 public class RoundRobinVmAllocation {
 
     public RoundRobinVmAllocation(int simulationNo) {
@@ -38,18 +47,20 @@ public class RoundRobinVmAllocation {
         // create instance of util class for datacenter operations
         DataCenterUtils dcUtil = new DataCenterUtils(hostSpec, dcSpec, vmSpec, cloudletSpec);
 
-        // create a new datacenter for simulation
+        // create a new datacenter for simulation, Hosts are not turned on creation
         dcUtil.createDatacenter(simulation, new VmAllocationPolicyRoundRobin(), false);
 
         // Creates a broker that is a software acting on behalf a cloud customer to manage VMs and Cloudlets
         DatacenterBroker broker = new DatacenterBrokerSimple(simulation);
 
         // create list of vms from config
+        logger.info("Creating list of VMs & submitting to datacenter broker");
         List<Vm> vmList = dcUtil.createVmList();
         // submit vm list to broker
         broker.submitVmList(vmList);
 
         // create list of cloudlets from config
+        logger.info("Creating list of Cloudlets & submitting to datacenter broker");
         List<Cloudlet> cloudletList = dcUtil.createCloudletList();
         // submit cloudlet list to broker
         broker.submitCloudletList(cloudletList);
@@ -64,5 +75,4 @@ public class RoundRobinVmAllocation {
         System.out.println("\n");
         logger.info("End of execution of Round Robin Vm Allocation Simulation\n\n");
     }
-
 }

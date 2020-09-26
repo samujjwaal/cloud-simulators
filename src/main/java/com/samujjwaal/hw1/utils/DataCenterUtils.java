@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+/**
+ * A util class for creating a datacenter and its constituent resources
+ * from input config files
+ */
 public class DataCenterUtils {
     //Define a static logger variable so that it references the Logger instance
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -89,9 +93,9 @@ public class DataCenterUtils {
         return list;
     }
 
-    public Datacenter createDatacenter(CloudSim simulation, VmAllocationPolicy vmAllocPolicy,VmScheduler vmScheduler, boolean activateHosts) {
+    public Datacenter createDatacenter(CloudSim simulation, VmAllocationPolicy vmAllocPolicy, VmScheduler vmScheduler, boolean activateHosts) {
         //List of Datacenter's Hosts
-        List<Host> hostList = createHostList(activateHosts,vmScheduler);
+        List<Host> hostList = createHostList(activateHosts, vmScheduler);
 
         //Uses a VmAllocationPolicySimple by default to allocate VMs
         Datacenter dc = new DatacenterSimple(simulation, hostList, vmAllocPolicy);
@@ -108,7 +112,7 @@ public class DataCenterUtils {
     }
 
     public Datacenter createDatacenter(CloudSim simulation, VmAllocationPolicy vmAllocPolicy, boolean activateHosts) {
-        return createDatacenter(simulation, vmAllocPolicy, new VmSchedulerSpaceShared(),activateHosts);
+        return createDatacenter(simulation, vmAllocPolicy, new VmSchedulerSpaceShared(), activateHosts);
     }
 
     public Datacenter createDatacenter(CloudSim simulation, VmAllocationPolicy vmAllocPolicy) {
@@ -120,7 +124,7 @@ public class DataCenterUtils {
     }
 
     public Datacenter createDatacenter(CloudSim simulation, boolean activateHosts) {
-        return createDatacenter(simulation, new VmAllocationPolicySimple(), new VmSchedulerSpaceShared(),activateHosts);
+        return createDatacenter(simulation, new VmAllocationPolicySimple(), new VmSchedulerSpaceShared(), activateHosts);
     }
 
     public Datacenter createDatacenter(CloudSim simulation) {
@@ -143,7 +147,7 @@ public class DataCenterUtils {
         return list;
     }
 
-    public List<Vm> createVmList(){
+    public List<Vm> createVmList() {
         return createVmList(new CloudletSchedulerTimeShared());
     }
 

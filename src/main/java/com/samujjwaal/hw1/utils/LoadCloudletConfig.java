@@ -3,6 +3,10 @@ package com.samujjwaal.hw1.utils;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
+/**
+ * A util class to parse cloudlet specifications from config file
+ */
+
 public class LoadCloudletConfig {
     Config conf;
     int  length, numberOfPE, size;

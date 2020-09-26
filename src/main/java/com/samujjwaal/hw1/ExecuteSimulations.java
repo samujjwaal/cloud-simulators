@@ -34,6 +34,5 @@ public class ExecuteSimulations {
         logger.info("End of all SaaS simulations\n\n");
 
         logger.info("<------- End of Hw1 Simulations ------->");
-
         }
 }

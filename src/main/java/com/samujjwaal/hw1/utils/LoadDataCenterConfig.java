@@ -3,6 +3,10 @@ package com.samujjwaal.hw1.utils;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
+/**
+ * A util class to parse datacenter specifications from config file
+ */
+
 public class LoadDataCenterConfig {
     Config conf;
     int numberOfHosts, numberOfVms,numberOfCloudlets;

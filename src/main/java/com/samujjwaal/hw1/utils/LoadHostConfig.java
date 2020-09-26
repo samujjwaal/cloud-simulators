@@ -3,6 +3,10 @@ package com.samujjwaal.hw1.utils;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
+/**
+ * A util class to parse host specifications from config file
+ */
+
 public class LoadHostConfig {
 
     Config conf;
