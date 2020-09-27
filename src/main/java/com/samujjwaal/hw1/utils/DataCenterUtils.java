@@ -69,7 +69,7 @@ public class DataCenterUtils {
         Uses ResourceProvisionerSimple by default for RAM and BW provisioning
         and VmSchedulerSpaceShared for VM scheduling.
         */
-        // Need to create a new instance of VmScheduler for each host. Each host must use is own instance of a VmScheduler
+        // Need to create a new instance of VmScheduler for each host. Each host must use its own instance of a VmScheduler
         VmScheduler scheduler = vmScheduler.getClass().newInstance();
 
         return new HostSimple(configHost.ram, configHost.bw, configHost.storage, peList, activateHost)

@@ -18,7 +18,7 @@ import java.util.List;
  * A simulation that shows the usage of the VmAllocationPolicyRoundRobin,
  * that cyclically assigns VMs to Hosts.
  * This policy places a VM into a Host and moves to the next Host.
- * <p>
+ *
  * All hosts are not powered-on when created. As VMs need to be placed,
  * Hosts are activated on demand (as can be checked in the logs).
  */
