@@ -32,7 +32,7 @@ import java.util.stream.IntStream;
  */
 public class DataCenterUtils {
     //Define a static logger variable so that it references the Logger instance
-    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(DataCenterUtils.class.getSimpleName());
 
     private final LoadHostConfig configHost;
     private final LoadDataCenterConfig configDatacenter;
@@ -46,9 +46,9 @@ public class DataCenterUtils {
         this.configCloudlet = configCloudlet;
 
         logger.info("Datacenter specifications loaded from the configuration file are:");
-        logger.info("Number of Hosts: " + configDatacenter.numberOfHosts);
-        logger.info("Number of Vms: " + configDatacenter.numberOfVms);
-        logger.info("Number of Cloudlets: " + configDatacenter.numberOfCloudlets + "\n");
+        logger.info("Number of Hosts: {} ", configDatacenter.numberOfHosts);
+        logger.info("Number of Vms: {}", configDatacenter.numberOfVms);
+        logger.info("Number of Cloudlets: {} \n", configDatacenter.numberOfCloudlets);
     }
 
     public List<Pe> createPeList() {
@@ -56,7 +56,7 @@ public class DataCenterUtils {
         IntStream.range(0, configHost.numberOfPE)
                 .forEach(i -> {
                     list.add(new PeSimple(configHost.mips));
-                    logger.info("PE " + i + " added to host");
+                    logger.info("PE {} added to host", i);
                 });
         return list;
     }
@@ -82,22 +82,22 @@ public class DataCenterUtils {
 
     public List<Host> createHostList(boolean activateHosts, VmScheduler vmScheduler) {
         List<Host> list = new ArrayList<>();
-        logger.info("Adding " + configDatacenter.numberOfHosts + " hosts to the datacenter");
+        logger.info("Adding {} hosts to the datacenter", configDatacenter.numberOfHosts);
         IntStream.range(0, configDatacenter.numberOfHosts)
                 .forEach(i -> {
-                    logger.info("Creating host " + i + " and adding PEs ");
+                    logger.info("Creating host {} and adding PEs ", i);
                     try {
                         list.add(createHost(activateHosts, vmScheduler));
                     } catch (IllegalAccessException | InstantiationException e) {
                         e.printStackTrace();
                     }
-                    logger.info("Host " + i + " added to datacenter");
+                    logger.info("Host {} added to datacenter", i);
                 });
         System.out.println();
         return list;
     }
 
-    public List<Host> createHostList(){
+    public List<Host> createHostList() {
         return createHostList(true, new VmSchedulerSpaceShared());
     }
 
@@ -147,13 +147,13 @@ public class DataCenterUtils {
                 .setSize(configVM.size);
     }
 
-    public Vm createVm(){
+    public Vm createVm() {
         return createVm(new CloudletSchedulerTimeShared());
     }
 
     public List<Vm> createVmList(CloudletScheduler cloudletScheduler) {
         List<Vm> list = new ArrayList<>();
-        logger.info("Provisioning " + configDatacenter.numberOfVms + " Vms for allocation to datacenter hosts\n");
+        logger.info("Provisioning {} Vms for allocation to datacenter hosts\n", configDatacenter.numberOfVms);
         IntStream.range(0, configDatacenter.numberOfVms)
                 .forEach(i -> list.add(createVm(cloudletScheduler)));
         return list;
@@ -175,7 +175,7 @@ public class DataCenterUtils {
 
     public List<Cloudlet> createCloudletList(UtilizationModel utilizationModel) {
         List<Cloudlet> list = new ArrayList<>();
-        logger.info("Received " + configDatacenter.numberOfCloudlets + " cloudlets for execution in the datacenter\n");
+        logger.info("Received {} cloudlets for execution in the datacenter\n", configDatacenter.numberOfCloudlets);
         IntStream.range(0, configDatacenter.numberOfCloudlets)
                 .forEach(i -> list.add(createCloudlet(utilizationModel)));
         return list;
@@ -186,11 +186,12 @@ public class DataCenterUtils {
     }
 
 
-    public float executionCost(List<Cloudlet> cloudlets) {
+    public static float executionCost(List<Cloudlet> cloudlets) {
         float cost = 0.0f;
         for (Cloudlet cl : cloudlets) {
             cost += cl.getTotalCost();
-            logger.info("Cost to execute cloudlet " + cl.getId() + " = " + (float) cl.getTotalCost());
+            logger.info("Cost to execute cloudlet {} on datacenter {} = {}"
+                    , cl.getId(), cl.getLastTriedDatacenter().getId(), (float) cl.getTotalCost());
         }
         return cost;
     }

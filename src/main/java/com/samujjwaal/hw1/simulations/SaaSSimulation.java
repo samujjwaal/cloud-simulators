@@ -68,7 +68,7 @@ public class SaaSSimulation {
 
         new CloudletsTableBuilder(finishedCloudlets).build();
 
-        System.out.println("Total cost of simulation = " + dcUtil.executionCost(finishedCloudlets));
+        System.out.println("Total cost of simulation = " + DataCenterUtils.executionCost(finishedCloudlets));
         System.out.println("\n");
 
         logger.info("End of execution of SaaS Simulation\n\n");
