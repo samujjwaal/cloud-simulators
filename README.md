@@ -1,13 +1,14 @@
 # Homework 1
 
 ### Description: create cloud simulators for evaluating executions of applications in cloud datacenters with different characteristics and deployment models.
+
 ## Application Design
 
 The program uses the [Cloud Sim Plus](http://cloudsimplus.org/) framework to create simulations of executing jobs on a cloud computing datacenter. Cloud Sim Plus is a software library that models the cloud environments and helps to operate different cloud models. This framework provides interfaces and classes to implement and simulate hosts, VMs, and cloudlets in a datacenter.
 
 Class UML diagram for the application:
 
-![](UML.png)
+![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/UML.png)
 
 ### Some Important Files
 
@@ -15,7 +16,7 @@ Class UML diagram for the application:
 
   Here is the structure of `LoadDataCenterConfig` class:
 
-  ![](LoadDataCenterConfig.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/LoadDataCenterConfig.png)
 
   ```java
   public class LoadDataCenterConfig {
@@ -45,7 +46,7 @@ Class UML diagram for the application:
 
 - `DataCenterUtils` is a utility class which defines methods for creating a datacenter and its constituent components like hosts, VMs and cloudlets.
 
-![](DataCenterUtils.png)
+![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/DataCenterUtils.png)
 
 The methods `createHost()`, `createHostList()`, `createVm()`, `createVmList()`, `createCloudlet()`, `createCloudletList()` and `createDatacenter()` have overloaded definitions.
 
@@ -53,7 +54,7 @@ The method `executionCost()` returns the overall cost of execution of a list of 
 
 - The class `CloudletExecutionSchedulerSimulation` is for simulating different execution schedulers available in cloud sim plus.
 
-  ![](CloudletExecutionSchedulerSimulation.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/CloudletExecutionSchedulerSimulation.png)
 
   A simple datacenter is created with 1 host, 1 VM and 2 cloudlets for execution.
 
@@ -61,17 +62,25 @@ The method `executionCost()` returns the overall cost of execution of a list of 
 
 - The class `RoundRobinVmAllocation` is for simulation that shows the usage of the VmAllocationPolicyRoundRobin, that cyclically assigns VMs to Hosts.
 
-  ![](RoundRobinVmAllocation.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/RoundRobinVmAllocation.png)
 
 - The class `SaaSSimulation` is for simulating an execution of a simple datacenter running on Software as a Service(SaaS) model.
 
-  ![](SaaSSimulation.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/SaaSSimulation.png)
 
   At the end of execution of cloudlet(s), it outputs the cost of execution.
 
+- The class `SimulateDatacenters` is for the simulation in step 5 of the homework. In this simulation 3 datacenters are created and each is based on a particular cloud model(SaaS,IaaS,PaaS/FaaS).
+
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/SimulateDC.png)
+  
+  The classes `iaasAndDefaultSpecs` and `paasSpecs` are for exclusively parsing the config files for a particular cloud model.
+  
+  The method `connectDataCenters()` connects the datacenters and datacenter broker using a brite topology. 
+  
 - The class `ExecuteSimulations` is the main class for running all simulations at once.
 
-  ![](ExecuteSimulations.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/ExecuteSimulations.png)
 
 ------
 
@@ -80,55 +89,55 @@ The method `executionCost()` returns the overall cost of execution of a list of 
 
 1. Space Shared VM Scheduling Simulation
 
-(Refer [SpaceShared.conf]() for simulation inputs)
+   (Refer [SpaceShared.conf]() for simulation inputs)
 
-A simulation showing a datacenter with 1 host, 1 VM and running 2 cloudlets on it, that will run sequentially.
+   A simulation showing a datacenter with 1 host, 1 VM and running 2 cloudlets on it, that will run sequentially.
 
-![](SpaceSharedSim.png)
+   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/SpaceSharedSim.png)
 
-In this simulation, each cloudlet runs for 10 seconds sequentially for a total execution time of 20 seconds.
+   In this simulation, each cloudlet runs for 10 seconds sequentially for a total execution time of 20 seconds.
 
-First cloudlet 1 executes and cloudlet 2 waits until 1 completes its executions. After cloudlet 1 completes the other cloudlet does the same. 
+   First cloudlet 1 executes and cloudlet 2 waits until 1 completes its executions. After cloudlet 1 completes the other cloudlet does the same. 
 
-At one instant of time there is only one cloudlet running on the VM and each one uses all the VM's CPU capacity while executing. In this manner, one cloudlet finishes prior to the other, but the execution time (the time using the processor) of each cloudlet is the same, given the cloudlets are equivalent in terms of resource requirements. 
+   At one instant of time there is only one cloudlet running on the VM and each one uses all the VM's CPU capacity while executing. In this manner, one cloudlet finishes prior to the other, but the execution time (the time using the processor) of each cloudlet is the same, given the cloudlets are equivalent in terms of resource requirements. 
 
-While using the space shared cloudlet scheduler, the first cloudlet is not interrupted by the next cloudlet when it starts to run because of the non-preemptive nature of the scheduler.
+   While using the space shared cloudlet scheduler, the first cloudlet is not interrupted by the next cloudlet when it starts to run because of the non-preemptive nature of the scheduler.
 
 ------
 
 2. Time Shared VM Scheduling Simulation
 
-(Refer [TimeShared.conf]() for simulation inputs)
+   (Refer [TimeShared.conf]() for simulation inputs)
 
-A simulation showing a datacenter with 1 host, 1 VM and running 2 cloudlets on it, that will compete for the VM's CPU execution time.
+   A simulation showing a datacenter with 1 host, 1 VM and running 2 cloudlets on it, that will compete for the VM's CPU execution time.
 
-![](TimeSharedSim.png)
+   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/TimeSharedSim.png)
 
-In this simulation, each cloudlet runs for 20 seconds in total while sharing VM’s CPU time, hence total time of simulation is also 20 seconds.
+   In this simulation, each cloudlet runs for 20 seconds in total while sharing VM’s CPU time, hence total time of simulation is also 20 seconds.
 
-The VM's CPU is shared among the cloudlets using a Time Shared VM scheduler, that performs a preemptive scheduling.
+   The VM's CPU is shared among the cloudlets using a Time Shared VM scheduler, that performs a preemptive scheduling.
 
-Each cloudlet gets a quantum of time to use the VM's CPU. Additionally, if both cloudlets have the same length, and they start and finish together. 
+   Each cloudlet gets a quantum of time to use the VM's CPU. Additionally, if both cloudlets have the same length, and they start and finish together. 
 
-Thus, the execution time for completion of both cloudlets is double the time duration compared to running each cloudlet in its own VM (i.e. using a space shared scheduler).
+   Thus, the execution time for completion of both cloudlets is double the time duration compared to running each cloudlet in its own VM (i.e. using a space shared scheduler).
 
 ------
 
 3. Round Robin VM Allocation Simulation
 
-(Refer [RoundRobin.conf]() for simulation inputs)
+   (Refer [RoundRobin.conf]() for simulation inputs)
 
-A simulation showing the usage of the VmAllocationPolicyRoundRobin for assigning VMs to cloudlets for execution. This policy cyclically places a VM into a Hosts and moves to the next Host.
+   A simulation showing the usage of the VmAllocationPolicyRoundRobin for assigning VMs to cloudlets for execution. This policy cyclically places a VM into a Hosts and moves to the next Host.
 
-All hosts are not powered-on when created. As VMs need to be placed, Hosts are activated on demand (as can be checked in the log file).
+   All hosts are not powered-on when created. As VMs need to be placed, Hosts are activated on demand (as can be checked in the log file).
 
-Such policies are naïve and can increase the number of active Hosts thus leading to higher power consumption.
+   Such policies are naïve and can increase the number of active Hosts thus leading to higher power consumption.
 
-![](RoundRobinSim.png)
+   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/RoundRobinSim.png)
 
-In this simulation, the datacenter has 4 hosts, 8 VMs and 8 cloudlets for execution. 
+   In this simulation, the datacenter has 4 hosts, 8 VMs and 8 cloudlets for execution. 
 
-VMs use a Time Shared scheduling policy for cloudlets by default, thus all cloudlets complete execution at the same time (800 secs).
+   VMs use a Time Shared scheduling policy for cloudlets by default, thus all cloudlets complete execution at the same time (8 secs).
 
 ------
 
@@ -163,7 +172,7 @@ VMs use a Time Shared scheduling policy for cloudlets by default, thus all cloud
       }
       ```
 
-      ![](SaaS_1.png)
+      ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/SaaS_1.png)
 
    2. Simulation 2
 
@@ -182,16 +191,36 @@ VMs use a Time Shared scheduling policy for cloudlets by default, thus all cloud
       }
       ```
 
-      ![](SaaS_2.png)
-
-   On comparing the results of simulations, it is evident that the cost of execution per cloudlet is about $100 lower for the 2nd datacenter. But interestingly the time of execution is 100 secs higher for the 2nd datacenter. 
-
-   So as a cloud broker, if cost per execution is a priority then datacenter 2 should be optimal choice. On the other hand, if execution time is a priority then datacenter 1 will be optimal choice, however at higher cost per execution.
+      ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/SaaS_2.png)
+   
+      On comparing the results of simulations, it is evident that the cost of execution per cloudlet is about $100 lower for the 2nd datacenter. But interestingly the time of execution is 100 secs higher for the 2nd datacenter. 
+   
+      So as a cloud broker, if cost per execution is a priority then datacenter 2 should be optimal choice. On the other hand, if execution time is a priority then datacenter 1 will be optimal choice, however at higher cost per execution.
+   
 
 ------
 
+5. Simulation for Step 5 of homework(3 datacenters)
 
+   (Refer [DataCenterSimulation.conf]() and [Default.conf]() for simulation inputs)
+
+   Three datacenters are being created in this simulation. Each datacenter is based on a particular cloud model, Datacenter 1 is IaaS, Datacenter 2 is PaaS and Datacenter 3 is SaaS. The datacenters are connected using a brite topology. *Since FaaS is a special case of PaaS, FaaS model has not been specifically simulated*.
+
+   The cloud models have been distinguished by the way the datacenter specifications config are provided for the simulation.
+
+   - *Default.conf* defines a baseline specification for a datacenter. These config parameters are assumed to be constant and not variable by the user. Hence, this config file is used to define the <u>SaaS</u> datacenter (as user has no control over the cloud infrastructure).
+
+   - In the <u>PaaS</u> model the cloud environment is already defined and set up by the cloud service provider. The end user uses this environment to compile and run programs. Thus, for the PaaS datacenter the Hosts and Vms are set up using the default parameters provided by *Default.conf*(assumed constant hence cant be altered by user). The cloudlets (user program) parameters for the PaaS datacenter are defined in *DataCenterSimulation.conf*, hosts and Vm parameters are not provided again.
+   - In the <u>IaaS</u> model the complete cloud infrastructure is defined and controlled by the end user. The user provide parameters for setting up Hosts, Vms and the cloudlets. *DataCenterSimulation.conf* provides the parameters to create the hosts, Vms and cloudlets. This config file is assumed to be accessible and modifiable for the cloud user.
+
+   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/3datacenters_1.png)
+
+   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/3datacenters_2.png)
 
 ------
 
 ## Instructions to Execute
+
+1. Clone this repository from Bitcucket
+2. Import as sbt project in IntelliJ IDE
+3. Run the `ExecuteSimulations` class
