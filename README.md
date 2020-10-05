@@ -8,7 +8,7 @@ The program uses the [Cloud Sim Plus](http://cloudsimplus.org/) framework to cre
 
 Class UML diagram for the application:
 
-![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/UML.png)
+![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/UML.png)
 
 ### Some Important Files
 
@@ -16,7 +16,7 @@ Class UML diagram for the application:
 
   Here is the structure of `LoadDataCenterConfig` class:
 
-  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/LoadDataCenterConfig.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/LoadDataCenterConfig.png)
 
   ```java
   public class LoadDataCenterConfig {
@@ -46,7 +46,7 @@ Class UML diagram for the application:
 
 - `DataCenterUtils` is a utility class which defines methods for creating a datacenter and its constituent components like hosts, VMs and cloudlets.
 
-![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/DataCenterUtils.png)
+![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/DataCenterUtils.png)
 
 The methods `createHost()`, `createHostList()`, `createVm()`, `createVmList()`, `createCloudlet()`, `createCloudletList()` and `createDatacenter()` have overloaded definitions.
 
@@ -54,7 +54,7 @@ The method `executionCost()` returns the overall cost of execution of a list of 
 
 - The class `CloudletExecutionSchedulerSimulation` is for simulating different execution schedulers available in cloud sim plus.
 
-  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/CloudletExecutionSchedulerSimulation.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/CloudletExecutionSchedulerSimulation.png)
 
   A simple datacenter is created with 1 host, 1 VM and 2 cloudlets for execution.
 
@@ -62,17 +62,17 @@ The method `executionCost()` returns the overall cost of execution of a list of 
 
 - The class `RoundRobinVmAllocation` is for simulation that shows the usage of the VmAllocationPolicyRoundRobin, that cyclically assigns VMs to Hosts.
 
-  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/RoundRobinVmAllocation.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/RoundRobinVmAllocation.png)
 
 - The class `SaaSSimulation` is for simulating an execution of a simple datacenter running on Software as a Service(SaaS) model.
 
-  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/SaaSSimulation.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/SaaSSimulation.png)
 
   At the end of execution of cloudlet(s), it outputs the cost of execution.
 
 - The class `SimulateDatacenters` is for the simulation in step 5 of the homework. In this simulation 3 datacenters are created and each is based on a particular cloud model(SaaS,IaaS,PaaS/FaaS).
 
-  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/SimulateDC.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/SimulateDC.png)
   
   The classes `iaasAndDefaultSpecs` and `paasSpecs` are for exclusively parsing the config files for a particular cloud model.
   
@@ -80,7 +80,7 @@ The method `executionCost()` returns the overall cost of execution of a list of 
   
 - The class `ExecuteSimulations` is the main class for running all simulations at once.
 
-  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/ExecuteSimulations.png)
+  ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/ExecuteSimulations.png)
 
 ------
 
@@ -93,7 +93,7 @@ The method `executionCost()` returns the overall cost of execution of a list of 
 
    A simulation showing a datacenter with 1 host, 1 VM and running 2 cloudlets on it, that will run sequentially.
 
-   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/SpaceSharedSim.png)
+   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/SpaceSharedSim.png)
 
    In this simulation, each cloudlet runs for 10 seconds sequentially for a total execution time of 20 seconds.
 
@@ -111,7 +111,7 @@ The method `executionCost()` returns the overall cost of execution of a list of 
 
    A simulation showing a datacenter with 1 host, 1 VM and running 2 cloudlets on it, that will compete for the VM's CPU execution time.
 
-   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/TimeSharedSim.png)
+   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/TimeSharedSim.png)
 
    In this simulation, each cloudlet runs for 20 seconds in total while sharing VM’s CPU time, hence total time of simulation is also 20 seconds.
 
@@ -133,7 +133,7 @@ The method `executionCost()` returns the overall cost of execution of a list of 
 
    Such policies are naïve and can increase the number of active Hosts thus leading to higher power consumption.
 
-   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/RoundRobinSim.png)
+   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/RoundRobinSim.png)
 
    In this simulation, the datacenter has 4 hosts, 8 VMs and 8 cloudlets for execution. 
 
@@ -172,7 +172,7 @@ The method `executionCost()` returns the overall cost of execution of a list of 
       }
       ```
 
-      ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/SaaS_1.png)
+      ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/SaaS_1.png)
 
    2. Simulation 2
 
@@ -191,7 +191,7 @@ The method `executionCost()` returns the overall cost of execution of a list of 
       }
       ```
 
-      ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/SaaS_2.png)
+      ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/SaaS_2.png)
    
       On comparing the results of simulations, it is evident that the cost of execution per cloudlet is about $100 lower for the 2nd datacenter. But interestingly the time of execution is 100 secs higher for the 2nd datacenter. 
    
@@ -213,9 +213,9 @@ The method `executionCost()` returns the overall cost of execution of a list of 
    - In the <u>PaaS</u> model the cloud environment is already defined and set up by the cloud service provider. The end user uses this environment to compile and run programs. Thus, for the PaaS datacenter the Hosts and Vms are set up using the default parameters provided by *Default.conf*(assumed constant hence cant be altered by user). The cloudlets (user program) parameters for the PaaS datacenter are defined in *DataCenterSimulation.conf*, hosts and Vm parameters are not provided again.
    - In the <u>IaaS</u> model the complete cloud infrastructure is defined and controlled by the end user. The user provide parameters for setting up Hosts, Vms and the cloudlets. *DataCenterSimulation.conf* provides the parameters to create the hosts, Vms and cloudlets. This config file is assumed to be accessible and modifiable for the cloud user.
 
-   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/3datacenters_1.png)
+   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/3datacenters_1.png)
 
-   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/3datacenters_2.png)
+   ![](https://bitbucket.org/samujjwaal/samujjwaal_dey_hw1_cs441/raw/master/etc/3datacenters_2.png)
 
 ------
 
