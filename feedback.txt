@@ -1,0 +1,7 @@
+Hi Samujjwaal,
+
+Your grade for HW1 is 13%.
+
+1. +3% for using functional Scala constructs.
+
+Abhijeet
